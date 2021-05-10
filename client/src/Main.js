@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useAuth } from './contexts/AuthContext'
 import { Navbar } from 'react-bootstrap';
 import Authentication from './components/authentication/Authentication'
 
