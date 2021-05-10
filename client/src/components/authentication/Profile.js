@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 
-export default function Profile() {
+export default function Profile(props) {
     const { currentUser, updateDisplayName, logout } = useAuth();
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
@@ -33,7 +33,7 @@ export default function Profile() {
         <div className="d-flex justify-content-center">
             {!currentUser.displayName ?
             <div>
-                <h4>account successfully created! before proceeding, please enter a username</h4>
+                    <h4 style={{ color: props.text}}>account successfully created! before proceeding, please enter a username</h4>
                 <Form onSubmit={updateUsername} className="d-flex justify-content-center align-items-center">
                     <Form.Group style={{marginRight: '10px'}}>
                         <Form.Control type="text" ref={usernameRef} placeholder='username' />
@@ -43,7 +43,7 @@ export default function Profile() {
             </div>
                 :
             <div>
-                <p>user {currentUser.displayName}</p>
+                <p style={{ color: props.text}}>user {currentUser.displayName}</p>
                 <Button onClick={logout} style={{ color: 'white' }} variant="danger">log out</Button>
             </div>
             }

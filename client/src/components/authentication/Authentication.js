@@ -5,12 +5,12 @@ import Profile from './Profile'
 import Login from './Login'
 import Signup from './Signup'
 
-export default function Authentication() {
+export default function Authentication(props) {
     const { currentUser } = useAuth();
     const [mode, setMode] = useState('login');
 
     if (currentUser) {
-        return <Profile />
+        return <Profile text={props.text} />
     }
 
     return (
