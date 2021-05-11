@@ -4,6 +4,7 @@ import { Form, Button, Alert, Spinner } from 'react-bootstrap'
 
 export default function Login() {
     const { login } = useAuth();
+    
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
     const emailRef = useRef()

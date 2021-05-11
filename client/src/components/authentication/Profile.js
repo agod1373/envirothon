@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react'
+import { useTheme } from '../../contexts/ThemeContext'
 import { Form, Button } from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function Profile(props) {
-    const { currentUser, updateDisplayName, logout } = useAuth();
+    const { currentUser, updateDisplayName, logout } = useAuth()
+    const { themeText } = useTheme()
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
 
@@ -33,7 +35,7 @@ export default function Profile(props) {
         <div className="d-flex justify-content-center">
             {!currentUser.displayName ?
             <div>
-                    <h4 style={{ color: props.text}}>account successfully created! before proceeding, please enter a username</h4>
+                    <h4 style={{ color: themeText}}>account successfully created! before proceeding, please enter a username</h4>
                 <Form onSubmit={updateUsername} className="d-flex justify-content-center align-items-center">
                     <Form.Group style={{marginRight: '10px'}}>
                         <Form.Control type="text" ref={usernameRef} placeholder='username' />
@@ -43,7 +45,7 @@ export default function Profile(props) {
             </div>
                 :
             <div>
-                <p style={{ color: props.text}}>user {currentUser.displayName}</p>
+                <p style={{ color: themeText}}>user {currentUser.displayName}</p>
                 <Button onClick={logout} style={{ color: 'white' }} variant="danger">log out</Button>
             </div>
             }
