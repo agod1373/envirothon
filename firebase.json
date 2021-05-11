@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "envirothon.study",
     "public": "client/build",
     "ignore": [
       "firebase.json",
@@ -9,8 +10,11 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": "envirothon"
       }
     ]
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

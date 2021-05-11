@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route } from 'react-router-dom'
+import PrivateRoute from './PrivateRoute'
 import AuthProvider from './contexts/AuthContext'
 import Main from './Main'
 import Upload from './components/upload/Upload'
@@ -14,7 +15,7 @@ function App() {
       <ThemeProvider>
         <Switch>
           <Route path="/" component={Main} exact />
-          <Route path="/upload" component={Upload} />
+          <PrivateRoute path="/upload" component={Upload} />
         </Switch>
       </ThemeProvider>
       </AuthProvider>

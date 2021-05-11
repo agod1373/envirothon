@@ -4,6 +4,7 @@ import Soils from '../../images/soils.svg'
 import Aquatics from '../../images/aquatics.svg'
 import Forestry from '../../images/forestry.svg'
 import Wildlife from '../../images/wildlife.svg'
+import General from '../../images/general.svg'
 import './Events.scss'
 
 export default function Events() {
@@ -26,6 +27,10 @@ export default function Events() {
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
                 <h4>Wildlife</h4>
                 <div className="circle"><img className='internal-image' src={Wildlife} type="svg" /></div>
+            </div>
+            <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
+                <h4>General Knowledge</h4>
+                <div className="circle"><img className='internal-image' src={General} type="svg" /></div>
             </div>
         </div>
     )

@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
-import { useAuth } from '../../contexts/ThemeContext'
+import app from '../../firebase.js'
+import ReactPlayer from 'react-player'
+import ReactAudioPlayer from 'react-audio-player'
+import { Player } from 'video-react'
+import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../contexts/ThemeContext'
-import { Form, Button, Spinner, OverlayTrigger, Popover, Alert, Card } from 'react-bootstrap'
+import { Form, Button, Spinner, OverlayTrigger, Popover, Alert, Card, Dropdown } from 'react-bootstrap'
 import Header from '../header/Header'
 import './Upload.scss'
 
 export default function Upload() {
+    const { currentUser } = useAuth()
     const { themeBackground, themeText } = useTheme()
     const [answerCount, setAnswerCount] = useState(2)
     const [loading, setLoading] = useState(false)
@@ -13,7 +18,10 @@ export default function Upload() {
     const [alert, setAlert] = useState('')
     const [error, setError] = useState('')
 
+    const [category, setCategory] = useState('Soils')
     const [q, setQ] = useState('')
+    const [url, setUrl] = useState('')
+    const [type, setType] = useState('')
     const [a, setA] = useState('')
     const [b, setB] = useState('')
     const [c, setC] = useState('')
@@ -33,9 +41,71 @@ export default function Upload() {
         }
     }
 
-    const submitQuestion = async (e) => {
+    const cont = (e) => {
         e.preventDefault()
+        if ((answer.toLowerCase().charCodeAt(0) - 96) > answerCount) {
+            return setError('Please choose an answer')
+        }
+        setReview(true)
+    }
+
+    const uploadPicture = async (e) => {
+        try {
+            const file = e.target.files[0];
+            setType(file.type.substring(0, 5))
+            const storageRef = app.storage().ref();
+            const fileRef = storageRef.child(file.name);
+            await fileRef.put(file);
+            const uploadedURL = await fileRef.getDownloadURL();
+            setUrl(uploadedURL);
+        } catch (error) {
+            return setError('upload failed. make sure you are logged in.');
+        }
+    }
+
+    const submitQuestion = async (event) => {
+        event.preventDefault()
         setLoading(true)
+
+        const answersArray = [a, b, c, d, e]
+
+        const j = `{
+            "username": "${currentUser.displayName}",
+            "uid": "${currentUser.uid}",
+            "question": "${q}",
+            "answers": "${answersArray.slice(0, answerCount)}",
+            "answer": "${answer}",
+            "file": "${url}",
+            "category": "${category}"
+        }`
+
+        console.log(j)
+
+        try {
+            await fetch('/api/postquestion', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: j
+            })
+            setQ('')
+            setUrl('')
+            setType('')
+            setAnswerCount(2)
+            setA('')
+            setB('')
+            setC('')
+            setD('')
+            setE('')
+            setAnswer('A')
+            setLoading(false)
+            setReview(false)
+            return setAlert('Successfully submitted question for review.')
+        } catch (err) {
+            setLoading(false)
+            setReview(false)
+            return setError('Failed to submit question. Please try again.')
+        }
+
     }
 
     const popover = (
@@ -48,6 +118,38 @@ export default function Upload() {
           </Popover.Content>
         </Popover>
       );
+    
+    if (review) {
+        return (
+            <div className="main" style={{color: themeText, backgroundColor: themeBackground}}>
+                <Header />
+                <Card className="review-card" style={{ color: '#e1afe1', maxWidth: '600px', minHeight: '300px' }}>
+                    {loading ? <Spinner style={{ marginTop: '50px' }} animation="border" variant="success" /> 
+                        :
+                    <div className="review-meat">
+                            <h2 style={{ textDecoration: 'underline', textAlign: 'center' }}>({category}) {q}</h2>
+                    {(url && type === 'image') && <img style={{ maxWidth: '350px', marginTop: '10px' }} src={url} alt="user uploaded image" />}
+                    {(url && type === 'audio') && <ReactAudioPlayer style={{ marginTop: '10px' }} src={url} controls />}
+                    {(url && type === 'video') && <ReactPlayer style={{ marginTop: '0px', maxWidth: '400px' }} url={url} controls />}
+                    <h3>Answer: {answer}</h3>
+                    <div style={{ width: '70%'}}>
+                        <h3>(a) {a}</h3>
+                        <h3>(b) {b}</h3>
+                        {c && <h3>(c) {c}</h3>}
+                        {d && <h3>(d) {d}</h3>}
+                        {e && <h3>(e) {e}</h3>}
+                    </div>
+                    <div className="d-flex">
+                        <Button onClick={() => setReview(false)} style={{ marginBottom: '10px', marginRight: '15px', width: '80px' }} variant="danger">Edit</Button>
+                        <Button style={{ marginBottom: '10px', width: '80px'}} onClick={(event) => submitQuestion(event)} variant="success">Submit</Button>
+                    </div>
+                    </div>
+                    }
+                </Card>
+            </div>
+            
+        )
+    }
 
     if (loading) {
         return (
@@ -57,27 +159,6 @@ export default function Upload() {
                     <Spinner style={{marginTop: '150px'}} animation="border" variant="success" />
                 </div>
             </div>
-        )
-    }
-
-    if (review) {
-        return (
-            <div className="main">
-                <Header />
-                <Card className="review-card" style={{color: themeText}}>
-                    <h2 style={{ textDecoration: 'underline' }}>{q}</h2>
-                    <h3>Answer: {answer}</h3>
-                    <div style={{ width: '70%'}}>
-                        <h3>(a) {a}</h3>
-                        <h3>(b) {b}</h3>
-                        {c && <h3>(c) {c}</h3>}
-                        {d && <h3>(d) {d}</h3>}
-                        {e && <h3>(e) {e}</h3>}
-                    </div>
-                    <Button onClick={(e) => submitQuestion} variant="success">Submit</Button>
-                </Card>
-            </div>
-            
         )
     }
 
@@ -92,20 +173,33 @@ export default function Upload() {
             </div>
             {alert && <Alert style={{textAlign: 'center', width: '300px', margin: '0px auto'}} variant="success">{alert}</Alert>}
             {error && <Alert style={{textAlign: 'center', width: '300px', margin: '0px auto'}} variant="danger">{error}</Alert>}
-            <Form onSubmit={() => setReview(true)} style={{ marginTop: '20px', color: themeText }} className="upload-form">
+            <Form onSubmit={(e) => cont(e)} style={{ marginTop: '15px', color: themeText }} className="upload-form">
+                <Dropdown style={{ marginBottom: '15px' }}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">{category}</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => setCategory('Soils')}>Soils</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Aquatics')}>Aquatics</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Forestry')}>Forestry</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('Wildlife')}>Wildlife</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setCategory('General Knowledge')}>General Knowledge</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
                 <Form.Group className="w-75">
                     <Form.Control value={q} onChange={(e) => setQ(e.target.value)} as="textarea" rows={3} placeHolder="enter question here" required />
                 </Form.Group>
                 <Form.Group style={{ marginTop: '20px', marginBottom: '20px'}}>
                     <Form.Label>upload image, audio, or video (optional)</Form.Label>
-                    <Form.File id="exampleFormControlFile1" label="" />
+                    <Form.File type="file" label="" onChange={(e) => uploadPicture(e)} />
+                    {(url && type === 'image') && <img style={{ maxWidth: '350px', marginTop: '10px' }} src={url} alt="user uploaded image" />}
+                    {(url && type === 'audio') && <ReactAudioPlayer style={{ marginTop: '10px' }} src={url} controls />}
+                    {(url && type === 'video') && <ReactPlayer style={{ marginTop: '10px' }} url={url} controls />}
                 </Form.Group>
                 <div className="answer-buttons">
                     <Form.Label style={{marginRight: '15px'}}>answers ({answerCount})</Form.Label>
                     <Form.Label onClick={increment} style={{ verticalAlign: 'middle', fontSize: '30px', color: '#AFE1AF', cursor: 'pointer', marginRight: '10px' }}>+</Form.Label>
                     <Form.Label onClick={decrement} style={{ verticalAlign: 'middle', fontSize: '30px', color: '#cf554c', cursor: 'pointer' }}>-</Form.Label>
                 </div>
-                <Form.Group>
+                <Form.Group required>
                 <Form.Label>Correct Answer</Form.Label>
                 <div className="d-flex w-75 align-items-left">
                     <Form.Check
@@ -165,15 +259,15 @@ export default function Upload() {
                 </Form.Group >
                 {(answerCount >= 3) && <Form.Group className="w-75">
                     <Form.Label>Choice C</Form.Label>
-                    <Form.Control value={c} onChange={(e) => setC(e.target.value)} type="text" placeHolder="third answer" />
+                    <Form.Control value={c} onChange={(e) => setC(e.target.value)} type="text" placeHolder="third answer" required />
                 </Form.Group>}
                 {(answerCount >= 4) && <Form.Group className="w-75">
                     <Form.Label>Choice D</Form.Label>
-                    <Form.Control value={d} onChange={(e) => setD(e.target.value)} type="text" placeHolder="fourth answer" />
+                    <Form.Control value={d} onChange={(e) => setD(e.target.value)} type="text" placeHolder="fourth answer" required/>
                 </Form.Group>}
                 {(answerCount >= 5) && <Form.Group className="w-75">
                     <Form.Label>Choice E</Form.Label>
-                    <Form.Control value={e} onChange={(e) => setE(e.target.value)}type="text" placeHolder="fifth answer" />
+                    <Form.Control value={e} onChange={(e) => setE(e.target.value)}type="text" placeHolder="fifth answer" required/>
                 </Form.Group>}
                 <Button style={{marginTop: '15px', marginBottom: '20px'}} type="submit" variant="success">Review & Submit</Button>
             </Form>
