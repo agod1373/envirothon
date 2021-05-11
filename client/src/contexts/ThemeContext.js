@@ -7,7 +7,7 @@ export function useTheme() {
 }
 
 export default function ThemeProvider({ children }) {
-    const themes = ['celadon', 'dark']
+    const themes = ['classic', 'dark']
     const themeBGs = ['white', '#282c34']
     const themeTexts = ['#e1afe1', 'white']
     const [themeNumber, setThemeNumber] = useState(0)
@@ -22,7 +22,7 @@ export default function ThemeProvider({ children }) {
         if (sessionStorage.getItem('number')) {
             setThemeNumber(sessionStorage.getItem('number'))
         }
-    })
+    }, [])
 
     const value = {
         changeTheme,
