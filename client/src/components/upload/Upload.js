@@ -28,6 +28,7 @@ export default function Upload() {
     const [d, setD] = useState('')
     const [e, setE] = useState('')
     const [answer, setAnswer] = useState('A')
+    const [explanation, setExplanation] = useState('')
 
     const increment = () => {
         if (answerCount < 5) {
@@ -76,10 +77,10 @@ export default function Upload() {
             "answers": "${answersArray.slice(0, answerCount)}",
             "answer": "${answer}",
             "file": "${url}",
-            "category": "${category}"
+            "category": "${category}",
+            "accepted": false,
+            "explanation": "${explanation}"
         }`
-
-        console.log(j)
 
         try {
             await fetch('/api/postquestion', {
@@ -90,12 +91,13 @@ export default function Upload() {
             setQ('')
             setUrl('')
             setType('')
-            setAnswerCount(2)
+            setAnswerCount(4)
             setA('')
             setB('')
             setC('')
             setD('')
             setE('')
+            setExplanation('')
             setAnswer('A')
             setLoading(false)
             setReview(false)
@@ -123,21 +125,22 @@ export default function Upload() {
         return (
             <div className="main" style={{color: themeText, backgroundColor: themeBackground}}>
                 <Header />
-                <Card className="review-card" style={{ color: '#e1afe1', maxWidth: '600px', minHeight: '300px', color: themeText }}>
+                <Card className="review-card" style={{ color: '#e1afe1', maxWidth: '600px', minHeight: '300px', color: themeText, backgroundColor: themeBackground, border: `4px solid ${themeText}` }}>
                     {loading ? <Spinner style={{ marginTop: '50px' }} animation="border" variant={themeVariant} /> 
                         :
                     <div className="review-meat">
-                            <h2 style={{ textAlign: 'center' }}>({category}) <span style={{textDecoration: 'underline'}}>{q}</span></h2>
+                    <h2 style={{ textAlign: 'center' }}>({category}) <span style={{textDecoration: 'underline'}}>{q}</span></h2>
                     {(url && type === 'image') && <img style={{ maxWidth: '350px', marginTop: '10px' }} src={url} alt="user uploaded image" />}
                     {(url && type === 'audio') && <ReactAudioPlayer style={{ marginTop: '10px' }} src={url} controls />}
                     {(url && type === 'video') && <ReactPlayer style={{ marginTop: '0px', maxWidth: '400px' }} url={url} controls />}
                     <h3>Answer: {answer}</h3>
-                    <div style={{ width: '70%'}}>
-                        <h3>(a) {a}</h3>
-                        <h3>(b) {b}</h3>
-                        {c && <h3>(c) {c}</h3>}
-                        {d && <h3>(d) {d}</h3>}
-                        {e && <h3>(e) {e}</h3>}
+                    <div style={{ width: '80%', marginBottom: '20px'}}>
+                        <h4>(a) {a}</h4>
+                        <h4>(b) {b}</h4>
+                        {c && <h4>(c) {c}</h4>}
+                        {d && <h4>(d) {d}</h4>}
+                        {e && <h4>(e) {e}</h4>}
+                        {explanation && <h5>* {explanation}</h5>}    
                     </div>
                     <div className="d-flex">
                         <Button onClick={() => setReview(false)} style={{ marginBottom: '10px', marginRight: '15px', width: '80px', color: 'white' }} variant="danger">Edit</Button>
@@ -156,7 +159,7 @@ export default function Upload() {
             <div>
                 <Header />
                 <div className="d-flex justify-content-center">
-                    <Spinner style={{marginTop: '150px'}} animation="border" variant={themeVariant} />
+                    <Spinner style={{marginTop: '135px'}} animation="border" variant={themeVariant} />
                 </div>
             </div>
         )
@@ -177,16 +180,16 @@ export default function Upload() {
                 <Dropdown style={{ marginBottom: '15px' }}>
                     <Dropdown.Toggle variant={themeVariant} id="dropdown-basic"><span style={{ color: themeBackground }}>{category}</span></Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item style={{ color: themeBackground }} onClick={() => setCategory('Soils')}>Soils</Dropdown.Item>
-                        <Dropdown.Item style={{ color: themeBackground }} onClick={() => setCategory('Aquatics')}>Aquatics</Dropdown.Item>
-                        <Dropdown.Item style={{ color: themeBackground }} onClick={() => setCategory('Forestry')}>Forestry</Dropdown.Item>
-                        <Dropdown.Item style={{ color: themeBackground }} onClick={() => setCategory('Wildlife')}>Wildlife</Dropdown.Item>
-                        <Dropdown.Item style={{ color: themeBackground }} onClick={() => setCategory('General Knowledge')}>General Knowledge</Dropdown.Item>
+                        <Dropdown.Item style={{ color: themeText }} onClick={() => setCategory('Soils')}>Soils</Dropdown.Item>
+                        <Dropdown.Item style={{ color: themeText }} onClick={() => setCategory('Aquatics')}>Aquatics</Dropdown.Item>
+                        <Dropdown.Item style={{ color: themeText }} onClick={() => setCategory('Forestry')}>Forestry</Dropdown.Item>
+                        <Dropdown.Item style={{ color: themeText }} onClick={() => setCategory('Wildlife')}>Wildlife</Dropdown.Item>
+                        <Dropdown.Item style={{ color: themeText }} onClick={() => setCategory('General Knowledge')}>General Knowledge</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Form.Group className="w-75">
                     <Form.Label>Question</Form.Label>
-                    <Form.Control value={q} onChange={(e) => setQ(e.target.value)} as="textarea" rows={3} placeHolder="enter question here" required />
+                    <Form.Control value={q} onChange={(e) => setQ(e.target.value)} as="textarea" rows={2} placeHolder="enter question here" required />
                 </Form.Group>
                 <Form.Group style={{ marginTop: '20px', marginBottom: '20px'}}>
                     <Form.Label>upload image, audio, or video (optional)</Form.Label>
@@ -269,6 +272,10 @@ export default function Upload() {
                     checked={answer === 'E'}
                     />}
                     </div>
+                </Form.Group>
+                <Form.Group className="w-75">
+                    <Form.Label>Explanation (optional)</Form.Label>
+                    <Form.Control value={explanation} onChange={(e) => setExplanation(e.target.value)} as="textarea" rows={3} placeHolder="enter explanation here" />
                 </Form.Group>
                 <Button style={{marginTop: '15px', marginBottom: '20px', color: themeBackground }} type="submit" variant={themeVariant}>Review & Submit</Button>
             </Form>
