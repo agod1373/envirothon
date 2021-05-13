@@ -11,7 +11,7 @@ import './Upload.scss'
 
 export default function Upload() {
     const { currentUser } = useAuth()
-    const { themeBackground, themeText } = useTheme()
+    const { themeBackground, themeText, themeVariant } = useTheme()
     const [answerCount, setAnswerCount] = useState(2)
     const [loading, setLoading] = useState(false)
     const [review, setReview] = useState(false)
@@ -124,7 +124,7 @@ export default function Upload() {
             <div className="main" style={{color: themeText, backgroundColor: themeBackground}}>
                 <Header />
                 <Card className="review-card" style={{ color: '#e1afe1', maxWidth: '600px', minHeight: '300px' }}>
-                    {loading ? <Spinner style={{ marginTop: '50px' }} animation="border" variant="success" /> 
+                    {loading ? <Spinner style={{ marginTop: '50px' }} animation="border" variant={themeVariant} /> 
                         :
                     <div className="review-meat">
                             <h2 style={{ textDecoration: 'underline', textAlign: 'center' }}>({category}) {q}</h2>
@@ -141,7 +141,7 @@ export default function Upload() {
                     </div>
                     <div className="d-flex">
                         <Button onClick={() => setReview(false)} style={{ marginBottom: '10px', marginRight: '15px', width: '80px' }} variant="danger">Edit</Button>
-                        <Button style={{ marginBottom: '10px', width: '80px'}} onClick={(event) => submitQuestion(event)} variant="success">Submit</Button>
+                        <Button style={{ marginBottom: '10px', width: '80px'}} onClick={(event) => submitQuestion(event)} variant={themeVariant}>Submit</Button>
                     </div>
                     </div>
                     }
@@ -156,7 +156,7 @@ export default function Upload() {
             <div>
                 <Header />
                 <div className="d-flex justify-content-center">
-                    <Spinner style={{marginTop: '150px'}} animation="border" variant="success" />
+                    <Spinner style={{marginTop: '150px'}} animation="border" variant={themeVariant} />
                 </div>
             </div>
         )
@@ -171,11 +171,11 @@ export default function Upload() {
                     <h3 style={{marginLeft: '15px', cursor: 'pointer'}}>?</h3>
                 </OverlayTrigger>
             </div>
-            {alert && <Alert style={{textAlign: 'center', width: '300px', margin: '0px auto'}} variant="success">{alert}</Alert>}
+            {alert && <Alert style={{textAlign: 'center', width: '300px', margin: '0px auto'}} variant={themeVariant}>{alert}</Alert>}
             {error && <Alert style={{textAlign: 'center', width: '300px', margin: '0px auto'}} variant="danger">{error}</Alert>}
             <Form onSubmit={(e) => cont(e)} style={{ marginTop: '15px', color: themeText }} className="upload-form">
                 <Dropdown style={{ marginBottom: '15px' }}>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">{category}</Dropdown.Toggle>
+                    <Dropdown.Toggle variant={themeVariant} id="dropdown-basic">{category}</Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={() => setCategory('Soils')}>Soils</Dropdown.Item>
                         <Dropdown.Item onClick={() => setCategory('Aquatics')}>Aquatics</Dropdown.Item>
@@ -185,6 +185,7 @@ export default function Upload() {
                     </Dropdown.Menu>
                 </Dropdown>
                 <Form.Group className="w-75">
+                    <Form.Label>Question</Form.Label>
                     <Form.Control value={q} onChange={(e) => setQ(e.target.value)} as="textarea" rows={3} placeHolder="enter question here" required />
                 </Form.Group>
                 <Form.Group style={{ marginTop: '20px', marginBottom: '20px'}}>
@@ -269,7 +270,7 @@ export default function Upload() {
                     <Form.Label>Choice E</Form.Label>
                     <Form.Control value={e} onChange={(e) => setE(e.target.value)}type="text" placeHolder="fifth answer" required/>
                 </Form.Group>}
-                <Button style={{marginTop: '15px', marginBottom: '20px'}} type="submit" variant="success">Review & Submit</Button>
+                <Button style={{marginTop: '15px', marginBottom: '20px'}} type="submit" variant={themeVariant}>Review & Submit</Button>
             </Form>
         </div>
     )

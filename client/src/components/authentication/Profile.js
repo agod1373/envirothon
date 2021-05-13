@@ -5,9 +5,10 @@ import { useAuth } from '../../contexts/AuthContext'
 
 export default function Profile(props) {
     const { currentUser, updateDisplayName, logout } = useAuth()
-    const { themeText } = useTheme()
+    const { themeText, themeBackground, themeVariant } = useTheme()
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
+    const [editUN, setEditUN] = useState(false)
 
     const usernameRef = useRef();
 
@@ -45,8 +46,9 @@ export default function Profile(props) {
             </div>
                 :
             <div>
-                <p style={{ color: themeText}}>user {currentUser.displayName}</p>
-                <Button onClick={logout} style={{ color: 'white' }} variant="danger">log out</Button>
+                <p style={{ color: themeText, verticalAlign: 'middle'}}><span style={{ fontSize: '30px', marginRight: '10px' }}>user</span> {currentUser.displayName} 
+                    <span style={{ marginLeft: '15px', textDecoration: 'underline', cursor: 'pointer' }}>edit</span></p>
+                <Button onClick={logout} style={{ color: themeBackground }} variant={themeVariant}>log out</Button>
             </div>
             }
         </div>

@@ -7,7 +7,7 @@ import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
 export default function Header() {
     const { currentUser } = useAuth()
-    const { changeTheme, themeNumber, themes, themeBGs, themeTexts, themeName, themeBackground, themeText } = useTheme();
+    const { changeTheme, themeNumber, themes, themeBGs, themeTexts, themeVariants, themeName, themeBackground, themeText, themeVariant } = useTheme();
 
     const loginPopover = (
         <Tooltip id="popover-basic">
@@ -16,8 +16,8 @@ export default function Header() {
     )
 
     return (
-        <Navbar bg="success" variant="dark" expand="sm">
-            <Navbar.Brand style={{ marginLeft: '10px', color: themeBackground}}><Link style={{color: themeBackground,textDecoration: 'none'}} to="/">envirothon.study</Link></Navbar.Brand>
+        <Navbar bg={themeVariant} variant="dark" expand="sm">
+            <Navbar.Brand style={{ marginLeft: '10px', color: themeBackground }}><Link style={{color: themeBackground, textDecoration: 'none'}} to="/">envirothon.study</Link></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 {currentUser ? 

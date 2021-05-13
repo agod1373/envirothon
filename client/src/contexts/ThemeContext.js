@@ -7,9 +7,10 @@ export function useTheme() {
 }
 
 export default function ThemeProvider({ children }) {
-    const themes = ['classic', 'dark']
-    const themeBGs = ['white', '#282c34']
-    const themeTexts = ['#e1afe1', 'white']
+    const themes = ['classic', 'dark', 'fog', 'alex', 'amelia', 'jackson', 'corrie', 'hannah']
+    const themeBGs = ['white', '#282c34', '#7B7D7D', '#ffffed', '#D6EAF8', '#F0B27A', '#B03A2E', '#0B5345']
+    const themeTexts = ['#023020', 'white', '#EAEDED', '#e1afe1', '#1F618D', '#AF601A', '#EAEDED', '#D7BDE2']
+    const themeVariants = ['success', 'success', 'light', 'secondary', 'primary', 'warning', 'light', 'info']
     const [themeNumber, setThemeNumber] = useState(0)
     const [loading, setLoading] = useState(false)
 
@@ -30,9 +31,11 @@ export default function ThemeProvider({ children }) {
         themes: themes,
         themeBGs: themeBGs,
         themeTexts: themeTexts,
+        themeVariants: themeVariants,
         themeName: themes[themeNumber],
         themeBackground: themeBGs[themeNumber],
-        themeText: themeTexts[themeNumber]
+        themeText: themeTexts[themeNumber],
+        themeVariant: themeVariants[themeNumber]
     }
 
     return (
