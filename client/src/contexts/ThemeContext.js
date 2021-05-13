@@ -8,9 +8,9 @@ export function useTheme() {
 
 export default function ThemeProvider({ children }) {
     const themes = ['classic', 'dark', 'fog', 'alex', 'amelia', 'jackson', 'corrie', 'hannah']
-    const themeBGs = ['white', '#282c34', '#7B7D7D', '#ffffed', '#D6EAF8', '#F0B27A', '#B03A2E', '#0B5345']
-    const themeTexts = ['#023020', 'white', '#EAEDED', '#e1afe1', '#1F618D', '#AF601A', '#EAEDED', '#D7BDE2']
-    const themeVariants = ['success', 'success', 'light', 'secondary', 'primary', 'warning', 'light', 'info']
+    const themeBGs = ['white', '#282c34', '#7B7D7D', '#ffffed', '#D6EAF8', '#F0B27A', '#B03A2E', '#3F5216']
+    const themeTexts = ['#023020', 'white', '#EAEDED', '#e1afe1', '#1F618D', '#AF601A', '#EAEDED', '#907153']
+    const themeVariants = ['success', 'success', 'light', 'secondary', 'primary', 'warning', 'light', 'info', 'B87A3D']
     const [themeNumber, setThemeNumber] = useState(0)
     const [loading, setLoading] = useState(false)
 
