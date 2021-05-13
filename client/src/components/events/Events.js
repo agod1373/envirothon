@@ -15,22 +15,27 @@ export default function Events() {
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
                 <h4>Soils</h4>
                 <div className="circle"><div className="circle-soil"><img className='internal-image-soil' src={Soils} type="svg" /></div></div>
+                <h5>questions</h5>
             </div>
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
                 <h4>Aquatics</h4>
                 <div className="circle"><img className='internal-image' src={Aquatics} type="svg" /></div>
+                <h5>questions</h5>
             </div>
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
                 <h4>Forestry</h4>
                 <div className="circle"><img className='internal-image' src={Forestry} type="svg" /></div>
+                <h5>questions</h5>
             </div>
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
                 <h4>Wildlife</h4>
                 <div className="circle"><img className='internal-image' src={Wildlife} type="svg" /></div>
+                <h5>questions</h5>
             </div>
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
-                <h4>General Knowledge</h4>
+                <h4>General</h4>
                 <div className="circle"><img className='internal-image' src={General} type="svg" /></div>
+                <h5>questions</h5>
             </div>
         </div>
     )
