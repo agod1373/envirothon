@@ -127,7 +127,7 @@ export default function Upload() {
                     {loading ? <Spinner style={{ marginTop: '50px' }} animation="border" variant={themeVariant} /> 
                         :
                     <div className="review-meat">
-                            <h2 style={{ textAlign: 'center' }}>({category}) <span style={{textDecoration: 'underline'}}>{q}</span>?</h2>
+                            <h2 style={{ textAlign: 'center' }}>({category}) <span style={{textDecoration: 'underline'}}>{q}</span></h2>
                     {(url && type === 'image') && <img style={{ maxWidth: '350px', marginTop: '10px' }} src={url} alt="user uploaded image" />}
                     {(url && type === 'audio') && <ReactAudioPlayer style={{ marginTop: '10px' }} src={url} controls />}
                     {(url && type === 'video') && <ReactPlayer style={{ marginTop: '0px', maxWidth: '400px' }} url={url} controls />}

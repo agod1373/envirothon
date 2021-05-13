@@ -10,6 +10,12 @@ import './Events.scss'
 export default function Events() {
     const { themeText } = useTheme()
 
+    const getQuestions = async (category) => {
+        const questions = await fetch(`/api/${category}`)
+        const questionsJson = await questions.json();
+        console.log(questionsJson)
+    }
+
     return (
         <div style={{ marginTop: '30px' }} className="d-flex justify-content-center flex-wrap">
             <div style={{ color: themeText }} className="d-flex flex-column align-items-center event">
