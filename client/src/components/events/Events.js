@@ -9,7 +9,7 @@ import './Events.scss'
 
 export default function Events() {
     const { themeText } = useTheme()
-    const [counts, setCounts] = useState([0, 0, 0, 0, 0])
+    const [counts, setCounts] = useState(['', '', '', '', ''])
 
     const getCounts = async () => {
         const counts = await fetch(`/api/questioncounts`)

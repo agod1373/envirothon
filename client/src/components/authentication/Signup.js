@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { useAuth } from '../../contexts/AuthContext'
+import { useTheme } from '../../contexts/ThemeContext'
 import { Form, Button, Alert, Spinner } from 'react-bootstrap'
 
 export default function Login() {
     const { signup, googleSignup } = useAuth();
+    const { themeVariant } = useTheme();
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
     const emailRef = useRef()
@@ -47,7 +49,7 @@ export default function Login() {
             
             {alert && <Alert style={{width: '300px', textAlign: 'center'}} variant="danger">{alert}</Alert>}
             {loading ?
-                <Spinner animation="border" variant="success" />
+                <Spinner animation="border" variant={themeVariant} />
             :
             <div>
                 <GoogleLoginButton style={{ width: '300px', margin: '10px auto'}} onClick={google} className="google-auth-button" variant="primary">log in with google</GoogleLoginButton>

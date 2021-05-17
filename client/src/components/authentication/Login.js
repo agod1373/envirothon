@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { useAuth } from '../../contexts/AuthContext'
+import { useTheme } from '../../contexts/ThemeContext'
 import { Form, Button, Alert, Spinner } from 'react-bootstrap'
 
 export default function Login() {
-    const { login , googleSignup } = useAuth();
+    const { login, googleSignup } = useAuth();
+    const { themeVariant } = useTheme();
     
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState('')
@@ -41,7 +43,7 @@ export default function Login() {
         <div className="d-flex justify-content-center align-items-center flex-column">
             {alert && <Alert className="mx-auto" style={{ width: '300px' }} variant="danger">{alert}</Alert>}
             {loading ?
-                <Spinner animation="border" variant="success" />
+                <Spinner animation="border" variant={themeVariant} />
                 :
                 <div>
                     <GoogleLoginButton style={{ width: '300px', margin: '10px auto'}} onClick={(e) => google()} className="google-auth-button" variant="primary">log in with google</GoogleLoginButton>
