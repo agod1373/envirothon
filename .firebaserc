@@ -1,14 +1,5 @@
 {
   "projects": {
-    "default": "read50"
-  },
-  "targets": {
-    "read50": {
-      "hosting": {
-        "envirothon.study": [
-          "envirothon"
-        ]
-      }
-    }
+    "default": "envirothon-study"
   }
 }

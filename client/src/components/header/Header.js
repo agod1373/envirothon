@@ -27,7 +27,13 @@ export default function Header() {
                         <Nav.Link style={{ color: themeBackground }}>upload a question</Nav.Link>
                     </OverlayTrigger>
             }
-            
+            <NavDropdown id="basic-nav-dropdown" variant="success" className="justify-content-end" title={<span style={{color: themeBackground}}>event</span>}>
+                    <NavDropdown.Item id="dropdown-link" href="#aquatics"><Link style={{color: '#53C0EB', textDecoration: 'none'}} to="/aquatics">Aquatics</Link></NavDropdown.Item>
+                    <NavDropdown.Item id="dropdown-link" href="#forestry"><Link style={{color: '#B7C132', textDecoration: 'none'}} to="/forestry">Forestry</Link></NavDropdown.Item>
+                    <NavDropdown.Item id="dropdown-link" href="#general"><Link style={{color: '#4BBC96', textDecoration: 'none'}} to="/general">General</Link></NavDropdown.Item>
+                    <NavDropdown.Item id="dropdown-link" href="#soils"><Link style={{color: '#A78967', textDecoration: 'none'}} to="/soils">Soils</Link></NavDropdown.Item>
+                    <NavDropdown.Item id="dropdown-link" href="#wildlife"><Link style={{color: '#9ACA42', textDecoration: 'none'}} to="/wildlife">Wildlife</Link></NavDropdown.Item>
+            </NavDropdown>
             <NavDropdown id="basic-nav-dropdown" variant="success" className="justify-content-end" style={{marginRight: '30px', width: '80px'}} title={<span style={{color: themeBackground}}>{themeName}</span>}>
                 {themes.map((t, key) => {
                     if (key != themeNumber) {

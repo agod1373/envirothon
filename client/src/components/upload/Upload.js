@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import app from '../../firebase.js'
 import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player'
-import { Player } from 'video-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../contexts/ThemeContext'
 import { Form, Button, Spinner, OverlayTrigger, Popover, Alert, Card, Dropdown } from 'react-bootstrap'
@@ -223,7 +222,7 @@ export default function Upload() {
                     <Form.Label>Choice E</Form.Label>
                     <Form.Control value={e} onChange={(e) => setE(e.target.value)}type="text" placeHolder="fifth answer" required/>
                 </Form.Group>}
-                <Form.Group required>
+                <Form.Group>
                 <Form.Label>Correct Answer</Form.Label>
                 <div className="d-flex w-75 align-items-left">
                     <Form.Check
@@ -234,6 +233,7 @@ export default function Upload() {
                     style={{marginRight: '10px'}}
                     onClick={() => setAnswer('A')}
                     checked={answer === 'A'}
+                    required
                     />
                     <Form.Check
                     type="radio"

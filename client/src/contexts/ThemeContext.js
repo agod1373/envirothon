@@ -12,17 +12,22 @@ export default function ThemeProvider({ children }) {
     const themes = ['classic', 'dark', 'fog', 'alex', 'amelia', 'corrie', 'hannah', 'jackson']
     const themeBGs = ['white', '#282c34', '#7B7D7D', '#ffffed', '#D6EAF8', '#B03A2E', '#3F5216', '#F0B27A']
     const themeTexts = ['#023020', 'white', '#EAEDED', '#e1afe1', '#1F618D', '#EAEDED', '#907153', '#AF601A']
-    const themeVariants = ['success', 'success', 'light', 'secondary', 'primary', 'light', 'info', 'warning']
+    const themeVariants = ['success', 'light', 'light', 'secondary', 'primary', 'light', 'info', 'warning']
     const [themeNumber, setThemeNumber] = useState(0)
     const [loading, setLoading] = useState(true)
 
     const changeTheme = async (n) => {
         setThemeNumber(n)
-        await fetch(`/api/user/settheme/${n}/${currentUser.uid}`, {
-            method: "PUT"
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
+        try {
+            await fetch(`/api/user/settheme/${n}/${currentUser.uid}`, {
+                method: "PUT"
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+        } catch (error) {
+            return null
+        }
+        
     }
 
     const getDBTheme = async () => {
@@ -32,7 +37,7 @@ export default function ThemeProvider({ children }) {
                 .then(data => setThemeNumber(data))
                 .then(setLoading(false))
         } catch (error) {
-            return null
+            return setLoading(false)
         }  
     }
 
@@ -41,7 +46,7 @@ export default function ThemeProvider({ children }) {
     }, [])
 
     const value = {
-        changeTheme,
+        changeTheme: changeTheme,
         themeNumber: themeNumber,
         themes: themes,
         themeBGs: themeBGs,

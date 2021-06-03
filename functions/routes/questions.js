@@ -16,6 +16,15 @@ module.exports = function (app) {
         }
     })
 
+    app.get("/api/questions/recent", async (req, res) => {
+        try {
+            const allWorks = await pool.query("SELECT * FROM questions ORDER BY id DESC LIMIT 8");
+            res.json(allWorks.rows);
+        } catch (err) {
+            console.error(err.message);
+        }
+    })
+
     app.get("/api/questioncounts", async (req, res) => {
         try {
             const counts = await pool.query("SELECT category, COUNT(*) FROM questions GROUP BY category ORDER BY category asc");
@@ -25,10 +34,10 @@ module.exports = function (app) {
         }
     })
 
-    app.get("/api/questions/:category", async (req, res) => {
+    app.get("/api/questions/category/:category", async (req, res) => {
         try {
             const { category } = req.params
-            const questions = await pool.query("SELECT * FROM questions WHERE category = $1", [category]);
+            const questions = await pool.query("SELECT * FROM questions WHERE category = $1 ORDER BY id DESC", [category]);
             res.json(questions.rows);
         } catch (err) {
             console.error(err.message);
@@ -38,7 +47,7 @@ module.exports = function (app) {
     app.post('/api/postquestion', async (req, res) => {
         try {
             const { username, uid, question, answers, answer, file, category, accepted, explanation } = req.body
-            const resp = await pool.query("INSERT INTO questions (username, uid, question, answers, answer, file, category, accepted, explanation) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+            const resp = await pool.query("INSERT INTO questions (username, uid, question, answers, answer, file, category, accepted, explanation, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_DATE)",
                 [username, uid, question, answers, answer, file, category, accepted, explanation]);
             res.json(resp);
         } catch (err) {

@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "target": "envirothon.study",
     "public": "client/build",
     "ignore": [
       "firebase.json",
