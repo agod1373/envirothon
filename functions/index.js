@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, "..", "client", "build")));
 
 require('./routes/main.js')(app);
 require('./routes/questions.js')(app);
+require('./routes/answers.js')(app);
 
 app.get("/", async (req, res) => {
     try {
