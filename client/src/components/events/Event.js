@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import ReactPlayer from 'react-player'
 import { useTheme } from '../../contexts/ThemeContext'
 import { Dropdown } from 'react-bootstrap'
 import Header from '../header/Header'
@@ -41,6 +42,7 @@ export default function Event(props) {
     return (
         <div className="main" style={{backgroundColor: themeBackground, width: '100vw'}}>
             <Header />
+            {props.category==='General Knowledge' && <ReactPlayer style={{ margin: '10px auto' }} url='https://www.youtube.com/watch?v=aYsTRhADX-Q' controls />}
             <div style={{ marginTop: '15px' }} className="d-flex justify-content-center align-items-center">
                 <h3 style={{ color: themeText, textAlign: 'center' }}>{props.category} questions ({questions.length})</h3>
                 <Dropdown style={{ marginLeft: '15px' }}>
